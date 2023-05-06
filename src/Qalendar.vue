@@ -67,6 +67,7 @@
 
       <Month
         v-if="mode === 'month'"
+        ref="month"
         :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
         :events-prop="eventsDataProperty"
         :time="time"
@@ -449,7 +450,12 @@ export default defineComponent({
     },
 
     closeFlyout() {
-      (this.$refs.week as any).closeFlyout()
+      if (this.$refs.month) {
+        (this.$refs.month as any).closeFlyout()
+      }
+      if (this.$refs.week) {
+        (this.$refs.week as any).closeFlyout()
+      }
     }
   },
 
