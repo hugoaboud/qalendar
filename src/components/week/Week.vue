@@ -449,7 +449,12 @@ export default defineComponent({
       setTime()
       setInterval(() => setTime(), 60000);
     },
+
+    closeFlyout() {
+      this.selectedEvent = null;
+    }
   },
+  expose: ['closeFlyout']
 });
 </script>
 

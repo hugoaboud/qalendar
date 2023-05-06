@@ -27,6 +27,8 @@
         <option value="5">5 days</option>
       </select>
 
+      <button @click="$emit('close-flyout')">Close Flyout</button>
+
       <button @click="isVisible = false">X</button>
     </div>
   </transition>
@@ -42,7 +44,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'DevToolbar',
 
-  emits: ['selected-layout', 'selected-locale', 'selected-n-days'],
+  emits: ['selected-layout', 'selected-locale', 'selected-n-days', 'close-flyout'],
 
   data() {
     return {

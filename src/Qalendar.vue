@@ -30,6 +30,7 @@
 
       <Week
         v-if="['week', 'day'].includes(mode)"
+        ref="week"
         :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
         :events-prop="eventsDataProperty"
         :period="period"
@@ -446,7 +447,13 @@ export default defineComponent({
         return allEvents;
       }, []);
     },
+
+    closeFlyout() {
+      (this.$refs.week as any).closeFlyout()
+    }
   },
+
+  expose: ['closeFlyout']
 });
 </script>
 
