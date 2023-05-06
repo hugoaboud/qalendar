@@ -65,6 +65,7 @@ export interface configInterface {
     isDisabled?: boolean;
     isCustom?: boolean;
     absolutePosition?: boolean;
+    disableCloseOnClickOutside?: boolean;
   }
   dayBoundaries?: {
     start: number; // integer between 0 and 24

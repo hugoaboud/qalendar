@@ -304,11 +304,15 @@ export default defineComponent({
   },
 
   mounted() {
-    this.listenForClickOutside();
+    if (!this.config.eventDialog?.disableCloseOnClickOutside) {
+      this.listenForClickOutside();
+    }
   },
 
   beforeUnmount() {
-    document.removeEventListener('click', this.closeFlyoutOnClickOutside);
+    if (!this.config.eventDialog?.disableCloseOnClickOutside) {
+      document.removeEventListener('click', this.closeFlyoutOnClickOutside);
+    }
   },
 
   methods: {
