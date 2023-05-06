@@ -243,6 +243,15 @@ export default defineComponent({
     },
 
     eventFlyoutInlineStyles() {
+
+      if (this.config.eventDialog?.absolutePosition) {
+        return {
+          top: this.top + 'px',
+          left: this.left + 'px',
+          position: 'absolute' as const
+        };
+      }
+
       if (typeof this.top === 'number' && !this.left) {
         return {
           top: this.top + 'px',
@@ -304,10 +313,11 @@ export default defineComponent({
 
   methods: {
     setFlyoutPosition() {
+      if (!this.eventElement) return;
+      
       const calendar = this.eventElement?.closest('.calendar-root');
       const flyout = document.querySelector('.event-flyout');
-
-      if (!this.eventElement) return;
+      const wrapper = document.querySelector('.calendar-week');
 
       const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
         this.eventElement?.getBoundingClientRect(),
@@ -315,7 +325,11 @@ export default defineComponent({
           height: flyout?.clientHeight || 300,
           width: flyout?.clientWidth || 0,
         },
-        calendar ? calendar.getBoundingClientRect() : null
+        calendar ? calendar.getBoundingClientRect() : null,
+        this.config.eventDialog?.absolutePosition ? {
+          top: this.eventElement?.offsetTop,
+          bottom: wrapper?.clientHeight || 0
+        } : undefined
       );
 
       this.top = typeof flyoutPosition?.top === 'number' ? flyoutPosition.top : null;
@@ -380,7 +394,6 @@ export default defineComponent({
 @use '../../styles/mixins' as mixins;
 
 .event-flyout {
-  position: fixed;
   z-index: 50;
   background-color: #fff;
   max-height: 100%;
