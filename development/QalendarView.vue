@@ -13,6 +13,7 @@
         :selected-date="new Date()"
         :config="config"
         :events="events"
+        :interval-states="intervalStates"
         :is-loading="isLoading"
         @event-was-clicked="reactToEvent"
         @updated-period="updatedPeriod"
@@ -45,19 +46,19 @@
             />
           </div>
         </template>
-<!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
-<!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
-<!--                    {{ eventProps.eventData.title }}-->
+        <!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
+        <!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
+        <!--                    {{ eventProps.eventData.title }}-->
 
-<!--            <div>-->
-<!--              <input type="checkbox" />-->
+        <!--            <div>-->
+        <!--              <input type="checkbox" />-->
 
-<!--              <label for="checkbox">-->
-<!--                Select time slot-->
-<!--              </label>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </template>-->
+        <!--              <label for="checkbox">-->
+        <!--                Select time slot-->
+        <!--              </label>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </template>-->
 
         <template #eventDialog="props">
           <div
@@ -100,7 +101,7 @@
 <script lang="ts">
 import Qalendar from '../src/Qalendar.vue';
 import { defineComponent } from 'vue';
-import { configInterface } from '../src/typings/config.interface';
+import { configInterface, dayIntervalsStateType } from '../src/typings/config.interface';
 import { eventInterface } from '../src/typings/interfaces/event.interface';
 import { seededEvents } from './data/seeded-events';
 import DevToolbar from './components/DevToolbar.vue';
@@ -143,8 +144,10 @@ export default defineComponent({
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {
-          height: 50,
-          length: 30,
+          height: 50, // The height of each interval
+          length: 30, // Length in minutes of each interval. Accepts values 15, 30 and 60 (the latter is the default)
+          displayClickableInterval: true, // Needs to be set explicitly to true, if you want to display clickable intervals
+          intervalStyles: { backgroundColor: '#32bbed77', color: 'white' }
         },
         eventDialog: {
           isDisabled: false,
@@ -155,7 +158,7 @@ export default defineComponent({
         }
       } as configInterface,
       events: [] as eventInterface[],
-
+      intervalStates: [] as dayIntervalsStateType[],
       layout: 'none',
       isLoading: false,
       eventDialogForm: {

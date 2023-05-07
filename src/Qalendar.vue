@@ -32,6 +32,7 @@
         v-if="['week', 'day'].includes(mode)"
         :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
         :events-prop="eventsDataProperty"
+        :interval-states="intervalStates"
         :period="period"
         :config="config"
         :mode-prop="mode"
@@ -107,7 +108,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { eventInterface } from './typings/interfaces/event.interface';
-import { configInterface } from './typings/config.interface';
+import { configInterface, dayIntervalsStateType } from './typings/config.interface';
 import Time from './helpers/Time';
 import AppHeader from './components/header/Header.vue';
 import Week from './components/week/Week.vue';
@@ -132,6 +133,10 @@ export default defineComponent({
     },
     events: {
       type: Array as PropType<eventInterface[]>,
+      default: () => [],
+    },
+    intervalStates: {
+      type: Array as PropType<dayIntervalsStateType[]>,
       default: () => [],
     },
     selectedDate: {

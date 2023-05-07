@@ -32,7 +32,7 @@
         :key="interval.intervalStart"
         class="calendar-week__day-interval"
         :class="{ 'has-border': interval.hasBorder }"
-        :style="intervalStyles"
+        :style="intervalStyles(interval)"
         @click="handleClickOnInterval(interval)"
       >
         {{ time.getLocalizedTime(interval.intervalStart) }}
@@ -50,6 +50,7 @@ import { eventInterface } from '../../typings/interfaces/event.interface';
 import Time from '../../helpers/Time';
 import {
   configInterface,
+  dayIntervalsStateType,
   dayIntervalsType,
 } from '../../typings/config.interface';
 import { modeType } from '../../typings/types';
@@ -86,6 +87,10 @@ export default defineComponent({
       type: Object as PropType<dayIntervalsType>,
       required: true,
     },
+    intervalStates: {
+      type: Array as PropType<dayIntervalsStateType[]>,
+      default: () => [],
+    },
   },
 
   emits: [
@@ -103,14 +108,6 @@ export default defineComponent({
       events: [] as eventInterface[],
       intervals: [] as interval[],
     };
-  },
-
-  computed: {
-    intervalStyles() {
-      return this.config.dayIntervals?.intervalStyles
-        ? this.config.dayIntervals.intervalStyles
-        : {};
-    },
   },
 
   mounted() {
@@ -131,6 +128,9 @@ export default defineComponent({
     },
 
     handleClickOnInterval(payload: interval) {
+      if (payload.hidden || payload.disabled) {
+        return
+      }
       const { intervalStart, intervalEnd } = payload;
       this.$emit('interval-was-clicked', { intervalStart, intervalEnd });
     },
@@ -142,11 +142,33 @@ export default defineComponent({
         dayStartTimeString = this.time.setSegmentOfDateTimeString(dayStartTimeString, { hour: startHour })
       }
 
+      const date = this.day.dateTimeString.replace(' 00:00','');
+      const dayStates = this.intervalStates?.filter(state => state.date === date) || [];
+      const intervalStates = dayStates.reduce((a,x) => {
+        a[x.interval] = x;
+        return a;
+      }, {} as any)
+
       this.intervals = new DayIntervals(
         this.dayIntervals.length || 60,
         dayStartTimeString,
         this.time.HOURS_PER_DAY,
+        intervalStates
       ).getIntervals()
+    },
+
+    intervalStyles(interval: interval) {
+      const style = {} as Record<string, string>
+      Object.assign(style, this.config.dayIntervals?.intervalStyles || {})
+
+      if (interval.hidden) {
+        style.opacity = '0%';
+      }
+      if (interval.color) {
+        style.background = interval.color;
+      }
+
+      return style
     },
   },
 });
@@ -171,6 +193,14 @@ export default defineComponent({
     }
   }
 
+  .calendar-week__day-interval:hover {
+    filter: brightness(120%);
+  }
+
+  .calendar-week__day-interval:active {
+    filter: brightness(150%);
+  }
+  
   &:first-child {
     border-left: 1px dashed rgb(224 224 224);
   }

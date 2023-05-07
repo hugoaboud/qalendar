@@ -35,6 +35,14 @@ export interface colorSchemes {
 
 export type intervalLengthType = 15 | 30 | 60;
 
+export type dayIntervalsStateType = {
+  date: string;
+  interval: number;
+  disabled?: boolean;
+  color?: string;
+  hidden?: boolean;
+}
+
 // Lets the implementer define:
 // a) length in minutes, of the day intervals
 // b) the height of each individual interval

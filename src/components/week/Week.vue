@@ -63,6 +63,7 @@
           :day-info="{ daysTotalN: days.length, thisDayIndex: dayIndex }"
           :mode="mode"
           :day-intervals="dayIntervals"
+          :interval-states="intervalStates"
           @event-was-clicked="handleClickOnEvent"
           @event-was-resized="$emit('event-was-resized', $event)"
           @event-was-dragged="handleEventWasDragged"
@@ -87,6 +88,7 @@
 import { defineComponent, PropType, Comment, Text, Slot, VNode } from 'vue';
 import {
   configInterface,
+  dayIntervalsStateType,
   dayIntervalsType,
 } from '../../typings/config.interface';
 import DayTimeline from './DayTimeline.vue';
@@ -125,6 +127,10 @@ export default defineComponent({
     },
     eventsProp: {
       type: Array as PropType<eventInterface[]>,
+      default: () => [],
+    },
+    intervalStates: {
+      type: Array as PropType<dayIntervalsStateType[]>,
       default: () => [],
     },
     period: {
