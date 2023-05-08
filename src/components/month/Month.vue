@@ -214,7 +214,12 @@ export default defineComponent({
       this.events = newEvents;
       this.initMonth();
     },
+    
+    closeFlyout() {
+      this.selectedEvent = null;
+    }
   },
+  expose: ['closeFlyout']
 });
 </script>
 

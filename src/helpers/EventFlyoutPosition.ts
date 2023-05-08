@@ -1,4 +1,5 @@
 type elementDimensions = { height: number; width: number };
+type AbsoluteOffset = { top: number; bottom: number };
 import { DOMRect } from "../typings/types";
 const calendarDomRectForVitest = {
   x: 8,
@@ -17,16 +18,28 @@ export default class EventFlyoutPosition {
   calculateFlyoutPosition(
     eventElementDOMRect: DOMRect,
     flyoutDimensions: elementDimensions,
-    calendarDomRectParam: DOMRect | null = null
+    calendarDomRectParam: DOMRect | null = null,
+    absoluteOffset?: AbsoluteOffset
   ): { top: number | null; left: number | null } | undefined {
     const calendarDomRect = calendarDomRectParam || calendarDomRectForVitest;
+
+    // Absolute positioning: use the event offset in relation to
+    // it's wrapper.
+    if (absoluteOffset) {
+      eventElementDOMRect = {
+        top: absoluteOffset.top,
+        right: eventElementDOMRect.right,
+        bottom: (absoluteOffset.top || 0) + eventElementDOMRect.height,
+        left: eventElementDOMRect.left
+      } as any;
+    }
 
     // The four variables below, contain the space in pixels, from the event to the calendar border
     // i.e. spaceTop === length from event top border, to calendar top border
     // and spaceRight === length from event right border to calendar right border
     const spaceTop = eventElementDOMRect.top - calendarDomRect.top;
     const spaceRight = calendarDomRect.right - eventElementDOMRect.right;
-    const spaceBottom = calendarDomRect.bottom - eventElementDOMRect.bottom;
+    const spaceBottom = (absoluteOffset?.bottom || calendarDomRect.bottom) - eventElementDOMRect.bottom;
     const spaceLeft = eventElementDOMRect.left - calendarDomRect.left;
 
     const flyoutNeededWidth = flyoutDimensions.width + 10;

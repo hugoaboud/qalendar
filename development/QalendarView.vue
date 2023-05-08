@@ -9,6 +9,7 @@
 
     <main>
       <Qalendar
+        ref="qalendar"
         :key="config.locale + config.week.nDays"
         :selected-date="new Date()"
         :config="config"
@@ -94,6 +95,7 @@
       @selected-locale="config.locale = $event"
       @selected-layout="layout = $event"
       @selected-n-days="config.week.nDays = $event"
+      @close-flyout="($refs.qalendar as any).closeFlyout()"
     />
   </div>
 </template>
@@ -152,6 +154,8 @@ export default defineComponent({
         eventDialog: {
           isDisabled: false,
           // isCustom: true,
+          // absolutePosition: true,
+          // disableCloseOnClickOutside: true,
         },
         month: {
           showTrailingAndLeadingDates: false,

@@ -30,6 +30,7 @@
 
       <Week
         v-if="['week', 'day'].includes(mode)"
+        ref="week"
         :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
         :events-prop="eventsDataProperty"
         :interval-states="intervalStates"
@@ -67,6 +68,7 @@
 
       <Month
         v-if="mode === 'month'"
+        ref="month"
         :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
         :events-prop="eventsDataProperty"
         :time="time"
@@ -451,7 +453,18 @@ export default defineComponent({
         return allEvents;
       }, []);
     },
+
+    closeFlyout() {
+      if (this.$refs.month) {
+        (this.$refs.month as any).closeFlyout()
+      }
+      if (this.$refs.week) {
+        (this.$refs.week as any).closeFlyout()
+      }
+    }
   },
+
+  expose: ['closeFlyout']
 });
 </script>
 
