@@ -423,7 +423,7 @@ export default defineComponent({
 
     setWeekHeightBasedOnIntervals() {
       // 1. Catch faulty configurations
-      if (![15, 30, 60].includes(this.dayIntervals.length)) {
+      if (![15, 30, 60, 180].includes(this.dayIntervals.length)) {
         this.dayIntervals.length = 60;
         this.dayIntervals.height = 66;
         console.warn(

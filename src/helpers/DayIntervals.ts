@@ -13,13 +13,13 @@ export type interval = {
  * Define the data for the clickable intervals to be viewed in a calendar day.
  * */
 export default class DayIntervals extends Time {
-  private readonly INTERVAL_MINUTES: 15 | 30 | 60
+  private readonly INTERVAL_MINUTES: 15 | 30 | 60 | 180
   private readonly DAY_START_DATE_TIME_STRING: string
   private readonly STATES: Record<number, dayIntervalsStateType>
   HOURS_PER_DAY = 24
 
   constructor(
-    intervalMinutes: 15 | 30 | 60,
+    intervalMinutes: 15 | 30 | 60 | 180,
     dayStartDateTimeString: string,
     hoursPerDay = 24,
     intervalStates: Record<number, dayIntervalsStateType> = []

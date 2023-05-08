@@ -147,7 +147,7 @@ export default defineComponent({
         isSilent: true,
         dayIntervals: {
           height: 50, // The height of each interval
-          length: 30, // Length in minutes of each interval. Accepts values 15, 30 and 60 (the latter is the default)
+          length: 30, // Length in minutes of each interval. Accepts values 15, 30, 60 and 180 (60 is the default)
           displayClickableInterval: true, // Needs to be set explicitly to true, if you want to display clickable intervals
           intervalStyles: { backgroundColor: '#32bbed77', color: 'white' }
         },
